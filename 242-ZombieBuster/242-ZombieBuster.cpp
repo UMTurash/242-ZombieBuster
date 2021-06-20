@@ -6,11 +6,37 @@
 
 int main()
 {
+    Derick Dboi;
     Chichonne Cboi;
-    Resources Rgang;
 
-    char effect = 'A';
-    Rgang.Effect(Cboi, effect);
+    cout << "\nDerick : " << Dboi.getSize() << " " << Dboi.getSymbol() << " " << Dboi.getLife() << " " << Dboi.getAmmo();
+    cout << "\nChichonne : " << Cboi.getSize() << " " << Cboi.getSymbol() << " " << Cboi.getLife() << " " << Cboi.getAmmo();
+
+    cout << "\n\nLarge Health";
+    LargeMedKit a;
+    Cboi = a.Effect(Cboi);
+    cout << "\nChichonne : " << Cboi.getSize() << " " << Cboi.getSymbol() << " " << Cboi.getLife() << " " << Cboi.getAmmo();
+
+    cout << "\n\nSmall Health";
+    SmallMedKit b;
+    Dboi = b.Effect(Dboi);
+    cout << "\nDerick : " << Dboi.getSize() << " " << Dboi.getSymbol() << " " << Dboi.getLife() << " " << Dboi.getAmmo();
+
+    cout << "\n\nAmmunaation";
+    Ammunation c;
+    Dboi = c.Effect(Dboi);
+    cout << "\nDerick : " << Dboi.getSize() << " " << Dboi.getSymbol() << " " << Dboi.getLife() << " " << Dboi.getAmmo();
+
+    LargeZombie lz;
+    cout << "\nLarge Zombie : " << lz.getSize() << " " << lz.getSymbol() << " " << lz.getZombieLife() << " " << lz.getZombieDamage() << " " << lz.getZombieScore();
+    
+    MediumZombie mz;
+    cout << "\nMedium Zombie : " << mz.getSize() << " " << mz.getSymbol() << " " << mz.getZombieLife() << " " << mz.getZombieDamage() << " " << mz.getZombieScore();
+   
+    SmallZombie sz;
+    cout << "\nSmall Zombie : " << sz.getSize() << " " << sz.getSymbol() << " " << sz.getZombieLife() << " " << sz.getZombieDamage() << " " << sz.getZombieScore();
+    cout << "\n\n";
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

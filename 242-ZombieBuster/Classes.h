@@ -34,13 +34,13 @@ public:
 class Derick : public Warrior
 {
 public:
-	Derick() : Warrior('D', 1, 100, 30) {}
+	Derick() : Warrior(1, 'D', 100, 30) {}
 };
 
 class Chichonne : public Warrior
 {
 public:
-	Chichonne() : Warrior('C', 1, 100, 25) {}
+	Chichonne() : Warrior(1, 'C', 100, 25) {}
 };
 
 
@@ -51,11 +51,64 @@ private:
 	int intLife;
 	int intDamage;
 	int intScore;
+public:
+	Zombie() : Entity() { intLife = 0; intDamage = 0; intScore = 0; }
+	Zombie(int s, int c, int life, int dmg, int scr) : Entity(s, c) { intLife = life; intDamage = dmg; intScore = scr; }
+	int getZombieLife() { return intLife; }
+	void setZombieLife(int l) { intLife = l; }
+	int getZombieDamage() { return intDamage; }
+	void setZombieDamage(int l) { intDamage = l; }
+	int getZombieScore() { return intScore; }
+	void setZombieScorre(int l) { intScore = l; }
+};
+
+class LargeZombie : public Zombie
+{
+public:
+	LargeZombie() : Zombie(3, 'L', 12, 8, 100) {};
+};
+
+class MediumZombie : public Zombie
+{
+public:
+	MediumZombie() : Zombie(2, 'M', 8, 4, 75) {};
+};
+
+class SmallZombie : public Zombie
+{
+public:
+	SmallZombie() : Zombie(1, 'S', 4, 2, 50) {};
 };
 
 class Resources : public Entity
 {
 public:
-	void Effect(Chichonne c, char effect) { c.updateAmmo(2); }
-	void Effect(Derick d, char effect) { cout << "No"; }
+	Resources() : Entity() {};
+	Resources(int s, int c) : Entity(s, c) {};
+	virtual Chichonne Effect(Chichonne c) = 0;
+	virtual Derick Effect(Derick d) = 0;
+};
+
+class LargeMedKit : public Resources
+{
+public:
+	LargeMedKit() : Resources(2, '*') {};
+	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 20); return c; }
+	Derick Effect(Derick d) { d.setLife(d.getLife() + 20); return d; }
+};
+
+class SmallMedKit : public Resources
+{
+public:
+	SmallMedKit() : Resources(1, '+') {};
+	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 10); return c;}
+	Derick Effect(Derick d) { d.setLife(d.getLife() + 10); return d; }
+};
+
+class Ammunation : public Resources
+{
+public:
+	Ammunation() : Resources(1, 'A') {};
+	Chichonne Effect(Chichonne c) { c.setAmmo(c.getAmmo() + 10); return c;}
+	Derick Effect(Derick d) { d.setAmmo(d.getAmmo() + 10); return d; }
 };
