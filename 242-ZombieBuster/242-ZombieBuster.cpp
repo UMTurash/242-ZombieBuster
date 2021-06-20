@@ -2,10 +2,15 @@
 //
 
 #include <iostream>
+#include "Classes.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    Chichonne Cboi;
+    Resources Rgang;
+
+    char effect = 'A';
+    Rgang.Effect(Cboi, effect);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
