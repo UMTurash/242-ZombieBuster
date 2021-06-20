@@ -16,14 +16,14 @@ public:
 	void setSymbol(char c) { representation = c; }
 };
 
-class Warrior : Entity
+class Warrior : public Entity
 {
 private:
 	int life;
 	int ammunition;
 public:
-	Warrior() { life = 0; ammunition = 0; }
-	Warrior(int l, int a) { life = l; ammunition = a; }
+	Warrior() : Entity() { life = 0; ammunition = 0; }
+	Warrior(int s, int c, int l, int a) : Entity(s, c) { life = l; ammunition = a; }
 	int getLife() { return life; }
 	int getAmmo() { return ammunition; }
 	void setLife(int l) { life = l; }
@@ -31,21 +31,21 @@ public:
 	void updateAmmo(int ammo) { ammunition -= ammo; }
 };
 
-class Derick : Warrior
+class Derick : public Warrior
 {
 public:
-	Derick() { this->setAmmo(30); this->setLife(100); this->setSymbol('D'); this->setSize(1); }
+	Derick() : Warrior('D', 1, 100, 30) {}
 };
 
-class Chichonne : Warrior
+class Chichonne : public Warrior
 {
 public:
-	Chichonne() { this->setAmmo(25); this->setLife(100); this->setSymbol('C'); this->setSize(1); }
+	Chichonne() : Warrior('C', 1, 100, 25) {}
 };
 
 
 
-class Zombie : Entity
+class Zombie : public Entity
 {
 private:
 	int intLife;
@@ -53,9 +53,9 @@ private:
 	int intScore;
 };
 
-class Resources : Entity
+class Resources : public Entity
 {
 public:
-	void Effect(Chichonne c, char effect) { c.updateAmmo(); }
+	void Effect(Chichonne c, char effect) { c.updateAmmo(2); }
 	void Effect(Derick d, char effect) { cout << "No"; }
 };
