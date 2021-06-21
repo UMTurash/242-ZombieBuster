@@ -2,6 +2,8 @@
 
 #include <iostream>
 using namespace std;
+
+
 class Entity
 {
 private:
@@ -20,12 +22,14 @@ class Warrior : public Entity
 {
 private:
 	int life;
+	int maxLife;
 	int ammunition;
 public:
-	Warrior() : Entity() { life = 0; ammunition = 0; }
-	Warrior(int s, int c, int l, int a) : Entity(s, c) { life = l; ammunition = a; }
+	Warrior() : Entity() { life = 0; ammunition = 0; maxLife = 0; }
+	Warrior(int s, int c, int l, int a) : Entity(s, c) { life = l; ammunition = a; maxLife = l; }
 	int getLife() { return life; }
 	int getAmmo() { return ammunition; }
+	int getMaxLife() { return maxLife; }
 	void setLife(int l) { life = l; }
 	void setAmmo(int a) { ammunition = a; }
 	void updateAmmo(int ammo) { ammunition -= ammo; }
@@ -51,10 +55,12 @@ private:
 	int intLife;
 	int intDamage;
 	int intScore;
+	int intMaxLife;
 public:
-	Zombie() : Entity() { intLife = 0; intDamage = 0; intScore = 0; }
-	Zombie(int s, int c, int life, int dmg, int scr) : Entity(s, c) { intLife = life; intDamage = dmg; intScore = scr; }
+	Zombie() : Entity() { intLife = 0; intDamage = 0; intScore = 0; intMaxLife = 0; }
+	Zombie(int s, int c, int life, int dmg, int scr) : Entity(s, c) { intLife = life; intDamage = dmg; intScore = scr; intMaxLife = life; }
 	int getZombieLife() { return intLife; }
+	int getZombieMaxLife() { return intMaxLife; }
 	void setZombieLife(int l) { intLife = l; }
 	int getZombieDamage() { return intDamage; }
 	void setZombieDamage(int l) { intDamage = l; }
