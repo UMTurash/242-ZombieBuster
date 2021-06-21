@@ -24,15 +24,18 @@ private:
 	int life;
 	int maxLife;
 	int ammunition;
+	int kills;
 public:
-	Warrior() : Entity() { life = 0; ammunition = 0; maxLife = 0; }
-	Warrior(int s, int c, int l, int a) : Entity(s, c) { life = l; ammunition = a; maxLife = l; }
+	Warrior() : Entity() { life = 0; ammunition = 0; maxLife = 0; kills = 0; }
+	Warrior(int s, int c, int l, int a) : Entity(s, c) { life = l; ammunition = a; maxLife = l; kills = 0; }
 	int getLife() { return life; }
 	int getAmmo() { return ammunition; }
 	int getMaxLife() { return maxLife; }
 	void setLife(int l) { life = l; }
 	void setAmmo(int a) { ammunition = a; }
 	void updateAmmo(int ammo) { ammunition -= ammo; }
+	void incKills() { kills++; }
+	int getKills() { return kills; }
 };
 
 class Derick : public Warrior

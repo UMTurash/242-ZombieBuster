@@ -1,12 +1,11 @@
 // 242-ZombieBuster.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
 #include "Classes.h"
+#include <cstdlib>
 
-int DiceRoll()
+int DiceRoll(void)
 {
-    srand(time(0));
     int dice = (int)(1 + rand() % 6);
     return dice;
 }
@@ -41,43 +40,114 @@ void printZombieHealthBar(Zombie z)
     cout << "|";
 }
 
+int BulletDamage()
+{
+    int roll = DiceRoll();
+    if (roll > 4) { cout << "\nCRITICAL HIT!!!!\n"; return 10; }
+    else if (roll < 3) { cout << "\nMinor Scratch\n"; return 2; }
+    else { cout << "\nNormal Hit\n"; return 5; }
+}
+
+int BattleMenu(Warrior w)
+{
+    int choice;
+    cout << " ____________________________________________________\n";
+    cout << "|    ____________________________________________    |\n";
+    cout << "|   |                                            |   |\n";
+    cout << "|   |      (1) Gun Shot  [Fire One Bullet]       |   |\n";
+    if (w.getSymbol() == 'D') 
+    {
+        cout << "|   |      (2) Gun Salvo [Fire Two Bullets]      |   |\n";
+        cout << "|   |      (3) Knife Slash [Knife Melee]         |   |\n";
+    }
+    else if ((w.getSymbol() == 'C') && (w.getKills() < 2)) { cout << "|   |      (2) Katana Slash [Katana Melee]       |   |\n"; }
+    else if ((w.getSymbol() == 'C') && (w.getKills() >= 2)) {cout << "|   |    (2) Dai-Katana Slash [Katana Melee]     |   |\n"; }
+
+    cout << "|   |____________________________________________|   |\n";
+    cout << "|____________________________________________________|\n";
+    cout << "\n                 Enter Your Choice : ";
+    cin >> choice;
+    return choice;
+}
+
 void Battle(Warrior *w, Zombie z)
 {
-    cout << "Battle Start!!!\nChichonne\tLarge Zombie\n";
+    int Damage = 0;
+    int choice;
+    if (w->getSymbol() == 'D') { cout << "Battle Start!!!\nDerick\tLarge Zombie\n"; }
+    else cout << "Battle Start!!!\nChichonne\tLarge Zombie\n";
     printWarriorHealthBar(*w);
     cout << "\t";
     printZombieHealthBar(z);
     cout << "\n\n";
     while ((w->getLife() > 0) && (z.getZombieLife() > 0))
     {
-        cout << "Chichonne attacks for 5 Damage\n";
-        z.setZombieLife(z.getZombieLife() - 5);
+
+        if ((w->getLife() > 0) && (w->getSymbol() == 'D'))
+        {
+        choice = BattleMenu(*w);
+        if (choice == 1) { cout << "Derick uses Gun Shot\n";  Damage = BulletDamage(); }
+        else if (choice == 2) { cout << "Derick uses Gun Salvo\n"; Damage = BulletDamage() + BulletDamage(); }
+        else if (choice == 3) { cout << "Derick uses Knife\n"; Damage = 2; }
+        cout << "Chichonne attacks for " << Damage << " Damage\n";
+        z.setZombieLife(z.getZombieLife() - Damage);
         cout << "Chichonne\tLarge Zombie\n";
         printWarriorHealthBar(*w);
         cout << "\t";
         printZombieHealthBar(z);
         cout << "\n\n";
-        cout << "Large Zombie attack for " << z.getZombieDamage() << " Damage\n";
-        w->setLife(w->getLife() - z.getZombieDamage());
-        cout << "Chichonne\tLarge Zombie\n";
-        printWarriorHealthBar(*w);
-        cout << "\t";
-        printZombieHealthBar(z);
-        cout << "\n\n";
+        }
+
+        else if ((w->getLife() > 0) && (w->getSymbol() == 'C'))
+        {
+            choice = BattleMenu(*w);
+            if (choice == 1) { cout << "Chichonne uses Gun Shot\n";  Damage = BulletDamage(); }
+            else if ((choice == 2) && (w->getKills() < 2)) { cout << "Chichonne uses Katana Slash\n"; Damage = 4; }
+            else if ((choice == 2) && (w->getKills() >= 2)) { cout << "Chichonne uses Dai-Katana Slash\n"; Damage = 6; }
+            cout << "Chichonne attacks for " << Damage << " Damage\n";
+            z.setZombieLife(z.getZombieLife() - Damage);
+            cout << "Chichonne\tLarge Zombie\n";
+            printWarriorHealthBar(*w);
+            cout << "\t";
+            printZombieHealthBar(z);
+            cout << "\n\n";
+        }
+
+        if (z.getZombieLife() > 0) 
+        {
+            cout << "Large Zombie attack for " << z.getZombieDamage() << " Damage\n";
+            w->setLife(w->getLife() - z.getZombieDamage());
+            cout << "Chichonne\tLarge Zombie\n";
+            printWarriorHealthBar(*w);
+            cout << "\t";
+            printZombieHealthBar(z);
+            cout << "\n\n";
+        }
     }
-    cout << "Dice Roll : " << DiceRoll() << endl;
-    w->setLife(w->getLife() - z.getZombieDamage());
 }
 
 int main()
 {
+    srand(time(0));
+    char player;
+    char cont = 'Y';
     Derick Dboi;
     Chichonne Cboi;
     LargeZombie lz;
 
-    Battle(&Cboi, lz);
-    cout << Cboi.getLife();
+    cout << "Choose your player [Derick | Chichonne] (D/C) : ";
+    cin >> player;
 
+
+    while (cont != 'N')
+    {
+        int currentHealth;
+        if (player == 'D') { Battle(&Dboi, lz); currentHealth = Dboi.getLife(); Dboi.incKills(); }
+        else if (player == 'C') { Battle(&Cboi, lz); currentHealth = Cboi.getLife(); Cboi.incKills(); }
+        if (Cboi.getKills() == 2) { cout << "\nChichonnes Katana has been upgraded to a Dai-Katana"; }
+        if (currentHealth > 0) { cout << "\nWould you like to fight again? (Y/N) : "; cin >> cont; }
+        else { cont = 'N'; }
+    }
 
     
 
