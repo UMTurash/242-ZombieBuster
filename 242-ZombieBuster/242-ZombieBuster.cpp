@@ -124,7 +124,7 @@ void Battle(Warrior *w, Zombie z)
             }
             cout << "Chichonne attacks for " << Damage << " Damage\n";
             z.setZombieLife(z.getZombieLife() - Damage);
-            cout << "Chichonne\tLarge Zombie\n";
+            cout << "Chichonne\tZombie\n";
             printWarriorHealthBar(*w);
             cout << "\t";
             printZombieHealthBar(z);
@@ -133,9 +133,12 @@ void Battle(Warrior *w, Zombie z)
 
         if (z.getZombieLife() > 0) 
         {
-            cout << "Large Zombie attack for " << z.getZombieDamage() << " Damage\n";
+            if (z.getSymbol() == 'L') { cout << "Large Zombie attack for " << z.getZombieDamage() << " Damage\n"; }
+            else if (z.getSymbol() == 'M') { cout << "Medium Zombie attack for " << z.getZombieDamage() << " Damage\n"; }
+            else { cout << "Small Zombie attack for " << z.getZombieDamage() << " Damage\n"; }
             w->setLife(w->getLife() - z.getZombieDamage());
-            cout << "Chichonne\tLarge Zombie\n";
+            if (w->getSymbol() == 'D') {cout << "Derick\tZombie\n"; }
+            else cout << "Chichonne\tZombie\n";
             printWarriorHealthBar(*w);
             cout << "\t";
             printZombieHealthBar(z);
@@ -152,6 +155,8 @@ int main()
     Derick Dboi;
     Chichonne Cboi;
     LargeZombie lz;
+    MediumZombie mz;
+    SmallZombie sz;
 
 
     string myText;
@@ -169,14 +174,26 @@ int main()
     {
         int currentHealth = 0;
         int score = 0;
-        if (player == 'D') { Battle(&Dboi, lz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
-        else if (player == 'C') { Battle(&Cboi, lz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
+        if (player == 'D') { Battle(&Dboi, mz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
+        else if (player == 'C') { Battle(&Cboi, sz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
         if (Cboi.getKills() == 2) { cout << "\nChichonnes Katana has been upgraded to a Dai-Katana"; }
         if (currentHealth > 0) { cout << "\nWould you like to fight again? (Y/N) : "; cin >> cont; }
         else {
             cont = 'N'; cout << "Total Kills : " << score << endl; while (getline(MyReadFile, myText)) { cout << myText << endl; }
         }
+        if (cont == 'N') { cout << "Total Kills : " << score << endl; };
     }
+
+    LargeMedKit lm;
+    SmallMedKit sm;
+    Ammunation ammo;
+
+    cout << "\n" << Cboi.getLife() << " " << Cboi.getAmmo();
+
+    Cboi = lm.Effect(Cboi);
+    Cboi = ammo.Effect(Cboi);
+
+    cout << "\n" << Cboi.getLife() << " " << Cboi.getAmmo();
 
     // Close the file
     MyReadFile.close();

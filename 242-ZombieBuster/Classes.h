@@ -102,16 +102,16 @@ class LargeMedKit : public Resources
 {
 public:
 	LargeMedKit() : Resources(2, '*') {};
-	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 20); return c; }
-	Derick Effect(Derick d) { d.setLife(d.getLife() + 20); return d; }
+	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 20); if (c.getLife() > c.getMaxLife()) { c.setLife(c.getMaxLife()); }; return c; }
+	Derick Effect(Derick d) { d.setLife(d.getLife() + 20); if (d.getLife() > d.getMaxLife()) { d.setLife(d.getMaxLife()); }; return d; }
 };
 
 class SmallMedKit : public Resources
 {
 public:
 	SmallMedKit() : Resources(1, '+') {};
-	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 10); return c;}
-	Derick Effect(Derick d) { d.setLife(d.getLife() + 10); return d; }
+	Chichonne Effect(Chichonne c) { c.setLife(c.getLife() + 10); if (c.getLife() > c.getMaxLife()) { c.setLife(c.getMaxLife()); }; return c; }
+	Derick Effect(Derick d) { d.setLife(d.getLife() + 10); if (d.getLife() > d.getMaxLife()) { d.setLife(d.getMaxLife()); }; return d; }
 };
 
 class Ammunation : public Resources
