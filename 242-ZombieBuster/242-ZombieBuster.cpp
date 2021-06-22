@@ -76,8 +76,8 @@ void Battle(Warrior *w, Zombie z)
 {
     int Damage = 0;
     int choice;
-    if (w->getSymbol() == 'D') { cout << "Battle Start!!!\nDerick\tLarge Zombie\n"; }
-    else cout << "Battle Start!!!\nChichonne\tLarge Zombie\n";
+    if (w->getSymbol() == 'D') { cout << "Battle Start!!!\nDerick\t\tZombie\n"; }
+    else cout << "Battle Start!!!\nChichonne\tZombie\n";
     printWarriorHealthBar(*w);
     cout << "\t";
     printZombieHealthBar(z);
@@ -102,7 +102,7 @@ void Battle(Warrior *w, Zombie z)
         else if (choice == 3) { cout << "Derick uses Knife\n"; Damage = 2; }
         cout << "Derick attacks for " << Damage << " Damage\n";
         z.setZombieLife(z.getZombieLife() - Damage);
-        cout << "Derick\tLarge Zombie\n";
+        cout << "Derick\t\tZombie\n";
         printWarriorHealthBar(*w);
         cout << "\t";
         printZombieHealthBar(z);
@@ -137,7 +137,7 @@ void Battle(Warrior *w, Zombie z)
             else if (z.getSymbol() == 'M') { cout << "Medium Zombie attack for " << z.getZombieDamage() << " Damage\n"; }
             else { cout << "Small Zombie attack for " << z.getZombieDamage() << " Damage\n"; }
             w->setLife(w->getLife() - z.getZombieDamage());
-            if (w->getSymbol() == 'D') {cout << "Derick\tZombie\n"; }
+            if (w->getSymbol() == 'D') {cout << "Derick\t\tZombie\n"; }
             else cout << "Chichonne\tZombie\n";
             printWarriorHealthBar(*w);
             cout << "\t";
@@ -172,10 +172,25 @@ int main()
 
     while (cont != 'N')
     {
-        int currentHealth = 0;
+        int currentHealth = 1;
         int score = 0;
-        if (player == 'D') { Battle(&Dboi, mz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
-        else if (player == 'C') { Battle(&Cboi, sz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
+        char opponent;
+        cout << "\nChoose your opponent : (L)arge Zombie | (M)edium Zombie | (S)mall Zombie : ";
+        cin >> opponent;
+        if (player == 'D') 
+        {
+            if (opponent == 'L') { Battle(&Dboi, lz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
+            else if (opponent == 'M') { Battle(&Dboi, mz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
+            else if (opponent == 'S') { Battle(&Dboi, sz); currentHealth = Dboi.getLife(); Dboi.incKills(); score = Dboi.getKills(); }
+            else cout << "\nInccorrect Opponent Option\n";
+        }
+        else if (player == 'C') 
+        { 
+            if (opponent == 'L') { Battle(&Cboi, lz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
+            else if (opponent == 'M') { Battle(&Cboi, mz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
+            else if (opponent == 'S') { Battle(&Cboi, sz); currentHealth = Cboi.getLife(); Cboi.incKills(); score = Cboi.getKills(); }
+            else cout << "\nIncorrect Opponent Option\n";
+        }
         if (Cboi.getKills() == 2) { cout << "\nChichonnes Katana has been upgraded to a Dai-Katana"; }
         if (currentHealth > 0) { cout << "\nWould you like to fight again? (Y/N) : "; cin >> cont; }
         else {
@@ -184,29 +199,6 @@ int main()
         if (cont == 'N') { cout << "Total Kills : " << score << endl; };
     }
 
-    LargeMedKit lm;
-    SmallMedKit sm;
-    Ammunation ammo;
-
-    cout << "\n" << Cboi.getLife() << " " << Cboi.getAmmo();
-
-    Cboi = lm.Effect(Cboi);
-    Cboi = ammo.Effect(Cboi);
-
-    cout << "\n" << Cboi.getLife() << " " << Cboi.getAmmo();
-
     // Close the file
     MyReadFile.close();
-
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
