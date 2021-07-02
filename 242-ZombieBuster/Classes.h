@@ -17,6 +17,7 @@ private:
 	int size, zombieNum, medNum, resNum;
 	GridCell** cells;
 	int* indexList;
+	int listCounter = 0;
 public:
 	Grid(int n)
 	{
@@ -27,12 +28,14 @@ public:
 		int Z = zombieNum;
 		int M = medNum;
 		int R = resNum;
+		int D = 1;
+		int C = 1;
 		cells = new GridCell* [size];
 		for (int i = 0; i < size; ++i)
 			cells[i] = new GridCell[size];
 		indexList = (int*)malloc(sizeof(int) * n * n);
 		int currentIndex = 0;
-		while (!(Z == 0 && M == 0 && R == 0))
+		while (!(Z == 0 && M == 0 && R == 0 && D==0 && C==0))
 		{
 			int positionX = rand() % size;
 			int positionY = rand() % size;
@@ -81,6 +84,8 @@ public:
 				{
 					int angleX = rand() % 3 -1;
 					int angleY = rand() % 3 -1;
+					if ((positionX + angleX >= size) || (positionY + angleY >= size) || (positionX + angleX < 0) || (positionY + angleY < 0))
+						continue;
 					if ((angleX == 0 && angleY == 0) || (cells[positionX+angleX][positionY+angleY].occupied == true))
 						continue;
 					cells[positionX][positionY].symbol = 'M';
@@ -97,9 +102,11 @@ public:
 					int angleY = rand() % 3 - 1;
 					int angleX1 = rand() % 3 - 1;
 					int angleY1 = rand() % 3 - 1;
+					if ((positionX + angleX >= size) || (positionY + angleY >= size) || (positionX + angleX1 >= size) || (positionX + angleY1 >= size) || (positionX + angleX < 0) || (positionY + angleY < 0) || (positionX + angleX1 < 0) || (positionY + angleY1 < 0))
+						continue;
 					if ((angleX == 0 && angleY == 0) || (cells[positionX + angleX][positionY + angleY].occupied == true))
 						continue;
-					if ((angleX1 == 0 && angleY1 == 0) || (cells[positionX + angleX1][positionY + angleY1].occupied == true))
+					if ((angleX1 == angleX && angleY1 == angleY) || (angleX1 == 0 && angleY1 == 0) || (cells[positionX + angleX1][positionY + angleY1].occupied == true))
 						continue;
 					cells[positionX][positionY].symbol = 'L';
 					cells[positionX][positionY].index = currentIndex;
@@ -139,6 +146,8 @@ public:
 				{
 					int angleX = rand() % 3 - 1;
 					int angleY = rand() % 3 - 1;
+					if ((positionX + angleX >= size) || (positionY + angleY >= size) || (positionX + angleX < 0) || (positionY + angleY < 0))
+						continue;
 					if ((angleX == 0 && angleY == 0) || (cells[positionX + angleX][positionY + angleY].occupied == true))
 						continue;
 					cells[positionX][positionY].symbol = '*';
@@ -153,18 +162,141 @@ public:
 			}
 			else if (R != 0)
 			{
-				cells[positionX][positionY].symbol = '+';
+				cells[positionX][positionY].symbol = 'A';
 				cells[positionX][positionY].index = currentIndex;
 				cells[positionX][positionY].occupied = true;
 				currentIndex++;
 				R--;
 			}
+			else if (D != 0)
+			{
+				cells[positionX][positionY].symbol = 'D';
+				cells[positionX][positionY].index = -2;
+				cells[positionX][positionY].occupied = true;
+				currentIndex++;
+				D--;
+			}
+			else if (C != 0)
+			{
+				cells[positionX][positionY].symbol = 'C';
+				cells[positionX][positionY].index = -3;
+				cells[positionX][positionY].occupied = true;
+				currentIndex++;
+				C--;
+			}
 		}
 	}
-
-	int moveGrid(int direction)
+	/*
+	0 - left
+	1 - right
+	2 - up
+	3 - down
+	4 - up-right
+	5 - down-right
+	6 - up-left
+	7 - down-left
+	Returns the index of the object in the position you go into.
+	_ - Empty cell
+	'-1' - Old cell
+	*/
+	char moveGrid(int direction, char player)
 	{
-
+		char newposIndex = '-1';
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (cells[i][j].symbol == player)
+				{
+					switch (direction)
+					{
+					case 0:
+						if (cells[i - 1][j].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i - 1][j].symbol;
+						indexList[listCounter] = cells[i - 1][j].index;
+						killIndex(cells[i - 1][j].index);
+						listCounter++;
+						cells[i - 1][j].index = cells[i][j].index;
+						cells[i - 1][j].symbol = player;
+						break;
+					case 1:
+						if (cells[i + 1][j].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i + 1][j].symbol;
+						indexList[listCounter] = cells[i + 1][j].index;
+						killIndex(cells[i + 1][j].index);
+						listCounter++;
+						cells[i + 1][j].index = cells[i][j].index;
+						cells[i + 1][j].symbol = player;
+						break;
+					case 2:
+						if (cells[i][j + 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i][j + 1].symbol;
+						indexList[listCounter] = cells[i][j + 1].index;
+						killIndex(cells[i][j + 1].index);
+						listCounter++;
+						cells[i][j + 1].index = cells[i][j].index;
+						cells[i][j + 1].symbol = player;
+						break;
+					case 3:
+						if (cells[i][j - 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i][j - 1].symbol;
+						indexList[listCounter] = cells[i][j - 1].index;
+						killIndex(cells[i][j - 1].index);
+						listCounter++;
+						cells[i][j - 1].index = cells[i][j].index;
+						cells[i][j - 1].symbol = player;
+						break;
+					case 4:
+						if (cells[i + 1][j + 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i + 1][j + 1].symbol;
+						indexList[listCounter] = cells[i + 1][j + 1].index;
+						killIndex(cells[i + 1][j + 1].index);
+						listCounter++;
+						cells[i + 1][j + 1].index = cells[i][j].index;
+						cells[i + 1][j + 1].symbol = player;
+						break;
+					case 5:
+						if (cells[i + 1][j - 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i + 1][j - 1].symbol;
+						indexList[listCounter] = cells[i + 1][j - 1].index;
+						killIndex(cells[i + 1][j - 1].index);
+						listCounter++;
+						cells[i + 1][j - 1].index = cells[i][j].index;
+						cells[i + 1][j - 1].symbol = player;
+						break;
+					case 6:
+						if (cells[i - 1][j + 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i - 1][j + 1].symbol;
+						indexList[listCounter] = cells[i - 1][j + 1].index;
+						killIndex(cells[i - 1][j + 1].index);
+						listCounter++;
+						cells[i - 1][j + 1].index = cells[i][j].index;
+						cells[i - 1][j + 1].symbol = player;
+						break;
+					case 7:
+						if (cells[i - 1][j - 1].symbol == 'X')
+							return newposIndex;
+						newposIndex = cells[i - 1][j - 1].symbol;
+						indexList[listCounter] = cells[i - 1][j - 1].index;
+						killIndex(cells[i - 1][j - 1].index);
+						listCounter++;
+						cells[i - 1][j - 1].index = cells[i][j].index;
+						cells[i - 1][j - 1].symbol = player;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+		return newposIndex;
 	}
 	char searchIndex(int index)
 	{
@@ -203,7 +335,7 @@ public:
 				else
 					printf("\t%c\t", cells[i][j].symbol);
 			}
-			printf("\n");
+			printf("\n\n\n");
 		}
 	}
 };

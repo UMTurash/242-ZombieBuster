@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <fstream>
 #include <string>
-
 int DiceRoll(void)
 {
     int dice = (int)(1 + rand() % 6);
@@ -158,6 +157,8 @@ int main()
     MediumZombie mz;
     SmallZombie sz;
 
+    Grid g = Grid(10);
+    g.printGrid();
 
     string myText;
     ifstream MyReadFile("Death.txt");
