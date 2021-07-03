@@ -148,10 +148,21 @@ void Battle(Warrior *w, Zombie z)
 
 int main()
 {
+    Derick d;
+    char c;
     srand(time(0));
     Grid g1(5);
     g1.printGrid();
+    cout << "\n==========================================\n";
+    c = g1.moveGrid(0, d.getSymbol());
+    g1.printGrid();
+    cout << "\n\n" << c << endl;
 
+
+    c = g1.moveGrid(1, d.getSymbol());
+    g1.printGrid();
+
+    cout << "\n\n" << c << endl;
     /*
     char player;
     char cont = 'Y';

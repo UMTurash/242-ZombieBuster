@@ -173,6 +173,7 @@ public:
 				cells[positionX][positionY].symbol = 'D';
 				cells[positionX][positionY].index = -2;
 				cells[positionX][positionY].occupied = true;
+				cells[positionX][positionY].hidden = false;
 				currentIndex++;
 				D--;
 			}
@@ -181,16 +182,17 @@ public:
 				cells[positionX][positionY].symbol = 'C';
 				cells[positionX][positionY].index = -3;
 				cells[positionX][positionY].occupied = true;
+				cells[positionX][positionY].hidden = false;
 				currentIndex++;
 				C--;
 			}
 		}
 	}
 	/*
-	0 - left
-	1 - right
-	2 - up
-	3 - down
+	0 - up
+	1 - down
+	2 - left
+	3 - right
 	4 - up-right
 	5 - down-right
 	6 - up-left
@@ -201,7 +203,7 @@ public:
 	*/
 	char moveGrid(int direction, char player)
 	{
-		char newposIndex = '-1';
+		char newposIndex = 'U';
 		for (int i = 0; i < size; i++)
 		{
 			for (int j = 0; j < size; j++)
@@ -219,6 +221,8 @@ public:
 						listCounter++;
 						cells[i - 1][j].index = cells[i][j].index;
 						cells[i - 1][j].symbol = player;
+						cells[i - 1][j].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 1:
 						if (cells[i + 1][j].symbol == 'X')
@@ -229,6 +233,8 @@ public:
 						listCounter++;
 						cells[i + 1][j].index = cells[i][j].index;
 						cells[i + 1][j].symbol = player;
+						cells[i + 1][j].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 2:
 						if (cells[i][j + 1].symbol == 'X')
@@ -239,6 +245,8 @@ public:
 						listCounter++;
 						cells[i][j + 1].index = cells[i][j].index;
 						cells[i][j + 1].symbol = player;
+						cells[i][j + 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 3:
 						if (cells[i][j - 1].symbol == 'X')
@@ -249,6 +257,8 @@ public:
 						listCounter++;
 						cells[i][j - 1].index = cells[i][j].index;
 						cells[i][j - 1].symbol = player;
+						cells[i][j - 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 4:
 						if (cells[i + 1][j + 1].symbol == 'X')
@@ -259,6 +269,8 @@ public:
 						listCounter++;
 						cells[i + 1][j + 1].index = cells[i][j].index;
 						cells[i + 1][j + 1].symbol = player;
+						cells[i + 1][j + 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 5:
 						if (cells[i + 1][j - 1].symbol == 'X')
@@ -269,6 +281,8 @@ public:
 						listCounter++;
 						cells[i + 1][j - 1].index = cells[i][j].index;
 						cells[i + 1][j - 1].symbol = player;
+						cells[i + 1][j - 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 6:
 						if (cells[i - 1][j + 1].symbol == 'X')
@@ -279,6 +293,8 @@ public:
 						listCounter++;
 						cells[i - 1][j + 1].index = cells[i][j].index;
 						cells[i - 1][j + 1].symbol = player;
+						cells[i - 1][j + 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					case 7:
 						if (cells[i - 1][j - 1].symbol == 'X')
@@ -289,6 +305,8 @@ public:
 						listCounter++;
 						cells[i - 1][j - 1].index = cells[i][j].index;
 						cells[i - 1][j - 1].symbol = player;
+						cells[i - 1][j - 1].hidden = false;
+						cells[i][j].symbol = 'X';
 						break;
 					default:
 						break;
