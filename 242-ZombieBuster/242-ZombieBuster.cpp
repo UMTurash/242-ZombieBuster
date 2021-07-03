@@ -150,6 +150,10 @@ void Battle(Warrior *w, Zombie z)
 int main()
 {
     srand(time(0));
+    Grid g1(5);
+    g1.printGrid();
+
+    /*
     char player;
     char cont = 'Y';
     Derick Dboi;
@@ -201,4 +205,5 @@ int main()
 
     // Close the file
     MyReadFile.close();
+    */
 }
