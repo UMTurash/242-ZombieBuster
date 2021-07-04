@@ -194,9 +194,9 @@ public:
 	2 - right
 	3 - left
 	4 - down-right
-	5 - down-right
-	6 - up-left
-	7 - down-left
+	5 - down-left
+	6 - up-right
+	7 - up-left
 	Returns the index of the object in the position you go into.
 	'_' - Empty cell
 	'U' - Old cell
@@ -212,7 +212,7 @@ public:
 			{
 				if (cells[i][j].symbol == player)
 				{
-					if ((i==0 && direction==0) || (i == size-1 && direction == 1) || (j == 0 && direction == 2) || (j == size-1 && direction == 3) || ((i == size-1 || j == size-1) && direction == 5) || ((i == size - 1 || j == 0) && direction == 7) || ((i == 0 || j == size - 1) && direction == 4) || ((i == 0 || j == 0) && direction == 6))
+					if ((i==0 && direction==0) || (i == size-1 && direction == 1) || (j == size - 1 && direction == 2) || (j == 0 && direction == 3) || ((i == size -1 || j == size - 1) && direction == 4) || ((i == size-1 || j == 0) && direction == 5) || ((i == 0 || j == size - 1) && direction == 6) || ((i == 0 || j == 0) && direction == 7))
 						return 'O';
 					switch (direction)
 					{

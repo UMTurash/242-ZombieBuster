@@ -151,10 +151,10 @@ int main()
     Derick d;
     char c;
     srand(time(0));
-    Grid g1(5);
+    Grid g1(9);
     g1.printGrid();
     cout << "\n==========================================\n";
-    for (int i = 0; i < 8; i++)
+    for (int i = 7; i >= 0; i--)
     {
         c = g1.moveGrid(i, d.getSymbol());
         g1.printGrid();
