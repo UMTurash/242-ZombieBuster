@@ -154,15 +154,19 @@ int main()
     Grid g1(5);
     g1.printGrid();
     cout << "\n==========================================\n";
-    c = g1.moveGrid(0, d.getSymbol());
-    g1.printGrid();
-    cout << "\n\n" << c << endl;
+    for (int i = 0; i < 8; i++)
+    {
+        c = g1.moveGrid(i, d.getSymbol());
+        g1.printGrid();
+        cout << "\n\n" << c << endl;
+        cout << "\n!==========================================!\n";
+    }
 
 
-    c = g1.moveGrid(1, d.getSymbol());
-    g1.printGrid();
+    //c = g1.moveGrid(1, d.getSymbol());
+    //g1.printGrid();
 
-    cout << "\n\n" << c << endl;
+   // cout << "\n\n" << c << endl;
     /*
     char player;
     char cont = 'Y';
